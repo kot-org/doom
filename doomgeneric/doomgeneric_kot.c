@@ -45,12 +45,11 @@ void DG_Init(){
 }
 
 void DG_DrawFrame(){
-    printf("Calling %s\n", __func__);
     write(fb_fd, DG_ScreenBuffer, DOOMGENERIC_RESX * DOOMGENERIC_RESY * sizeof(uint32_t));
 }
 
 void DG_SleepMs(uint32_t ms){
-    sleep(ms);
+    usleep(ms * 1000);
 }
 
 uint32_t DG_GetTicksMs(){
@@ -61,12 +60,47 @@ uint32_t DG_GetTicksMs(){
 }
 
 int DG_GetKey(int* pressed, unsigned char* doomKey){
-    printf("Calling %s\n", __func__);
+    int64_t buffer;
+    if(read(fb_fd, &buffer, 1) > 0){
+        if(buffer & ((uint64_t)1 << 63)){
+            *pressed = true;
+        }else{
+            *pressed = false;
+        }
+        uint64_t key = buffer & ~((uint64_t)1 << 63);
+
+        switch(key){
+            case 1:
+                *doomKey = KEY_ESCAPE;
+                return 1;
+            case 17:
+                *doomKey = KEY_UPARROW;
+                return 1;
+            case 28:
+                *doomKey = KEY_ENTER;
+                return 1;
+            case 29:
+                *doomKey = KEY_FIRE;
+                return 1;
+            case 30:
+                *doomKey = KEY_LEFTARROW;
+                return 1;
+            case 31:
+                *doomKey = KEY_DOWNARROW;
+                return 1;
+            case 32:
+                *doomKey = KEY_RIGHTARROW;
+                return 1;
+            case 57:
+                *doomKey = KEY_USE;
+                return 1;
+        }
+    }
     return 0;
 }
 
 void DG_SetWindowTitle(const char * title){
-    printf("Calling %s\n", __func__);
+    
 }
 
 int main(int argc, char **argv){
