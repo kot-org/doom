@@ -76,6 +76,9 @@ int DG_GetKey(int* pressed, unsigned char* doomKey){
             case 17:
                 *doomKey = KEY_UPARROW;
                 return 1;
+            case 21:
+                *doomKey = 'y';
+                return 1;
             case 28:
                 *doomKey = KEY_ENTER;
                 return 1;
