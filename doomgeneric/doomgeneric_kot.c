@@ -1,4 +1,4 @@
-//doomgeneric for cross-platform development library 'Simple DirectMedia Layer'
+//doomgeneric for kot
 
 #include "doomkeys.h"
 #include "m_argv.h"
