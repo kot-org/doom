@@ -60,14 +60,14 @@ uint32_t DG_GetTicksMs(){
 }
 
 int DG_GetKey(int* pressed, unsigned char* doomKey){
-    int64_t buffer;
-    if(read(fb_fd, &buffer, 1) > 0){
-        if(buffer & ((uint64_t)1 << 63)){
+    uint64_t buffer[2];
+    if(read(fb_fd, &buffer, sizeof(uint64_t) * 2) > 0){
+        if(buffer[1] & ((uint64_t)1 << 63)){
             *pressed = true;
         }else{
             *pressed = false;
         }
-        uint64_t key = buffer & ~((uint64_t)1 << 63);
+        uint64_t key = buffer[0];
 
         switch(key){
             case 1:
